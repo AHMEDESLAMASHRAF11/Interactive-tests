@@ -10,369 +10,714 @@
             --success: #27ae60; 
             --danger: #c0392b; 
             --warning: #f39c12;
+            --info: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
         body { 
-            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            font-family: 'Segoe UI', 'Tahoma', 'Helvetica', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 10px; 
+            padding: 20px 10px;
             min-height: 100vh;
+            color: var(--dark);
         }
         .container { 
             max-width: 900px; 
-            margin: auto; 
+            margin: 0 auto;
             background: white; 
-            padding: 25px; 
+            padding: 30px; 
             border-radius: 15px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideDown 0.5s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         h1 { 
             text-align: center; 
             color: var(--primary); 
             border-bottom: 4px solid var(--primary); 
             padding-bottom: 15px; 
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            word-wrap: break-word;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
             margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .header-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .header-info-item { 
+            padding: 10px; 
+            background: var(--light); 
+            border-radius: 8px;
+            border-right: 4px solid var(--primary);
+        }
+        .header-info-item strong {
+            color: var(--primary);
         }
         .stats-sticky { 
             position: sticky; 
-            top: 0; 
+            top: 10px;
             background: white; 
             z-index: 1000; 
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
             padding: 15px; 
-            border-bottom: 2px solid #ddd; 
+            border: 2px solid var(--light);
             margin-bottom: 25px; 
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .stat-item {
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: transform 0.2s;
         }
-        .stat-success { background: #d4edda; color: var(--success); }
-        .stat-danger { background: #f8d7da; color: var(--danger); }
-        .stat-info { background: #d1ecf1; color: #0c5460; }
-        .stat-warning { background: #fff3cd; color: #856404; }
+        .stat-item:hover {
+            transform: scale(1.05);
+        }
+        .stat-success { 
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 4px solid var(--success);
+        }
+        .stat-danger { 
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left: 4px solid var(--danger);
+        }
+        .stat-info { 
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border-left: 4px solid var(--info);
+        }
+        .stat-warning { 
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            color: #856404;
+            border-left: 4px solid var(--warning);
+        }
+        .stat-label {
+            font-size: 0.8em;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        .progress-container {
+            margin-bottom: 20px;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #555;
+        }
         .progress-bar {
             width: 100%;
-            height: 8px;
-            background: #e9ecef;
+            height: 12px;
+            background: var(--light);
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 50%, var(--info) 100%);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
         .q-card { 
             margin-bottom: 25px; 
             padding: 20px; 
             border-right: 6px solid #d5dbdb; 
             background: #fff; 
-            border-radius: 12px; 
+            border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            animation: fadeIn 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .q-card:hover:not(.disabled) { 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-right-color: var(--primary);
         }
         .q-number {
             display: inline-block;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, #7d35a0 100%);
             color: white;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.85em;
-            margin-bottom: 10px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .q-text { 
-            font-size: 1.1em; 
-            font-weight: bold; 
+            font-size: 1.05em; 
+            font-weight: 600; 
             margin-bottom: 15px; 
-            color: #2c3e50; 
+            color: var(--dark);
+            line-height: 1.7;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .opts-box {
+            margin: 15px 0;
         }
         .opt { 
             display: block; 
-            padding: 14px; 
+            padding: 13px 16px; 
             margin: 10px 0; 
-            border: 2px solid #ebf0f1; 
+            border: 2px solid #e0e0e0; 
             border-radius: 10px; 
             cursor: pointer; 
-            transition: 0.2s; 
-            background: #fdfefe;
+            transition: all 0.2s ease;
+            background: #fafafa;
+            font-size: 1em;
+            font-weight: 500;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
-        .opt:hover { 
-            background: #f4f6f7; 
+        .opt:hover:not(.correct):not(.wrong) { 
+            background: #f5f5f5; 
             border-color: var(--primary);
             transform: translateX(-5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .opt.correct { 
-            background-color: #d4edda !important; 
-            border-color: var(--success) !important; 
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-color: var(--success);
             color: #155724; 
-            font-weight: bold;
+            font-weight: 600;
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
         }
         .opt.wrong { 
-            background-color: #f8d7da !important; 
-            border-color: var(--danger) !important; 
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border-color: var(--danger);
             color: #721c24;
+            font-weight: 600;
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(192, 57, 43, 0.2);
         }
         .feedback { 
             margin-top: 15px; 
-            font-weight: bold; 
+            font-weight: 600; 
             display: none; 
-            padding: 10px; 
-            border-radius: 5px;
-            border-right: 4px solid;
+            padding: 12px 15px; 
+            border-radius: 8px;
+            border-right: 5px solid;
+            animation: slideIn 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border-color: var(--success);
+        }
+        .feedback.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: var(--danger);
         }
         .disabled { 
             pointer-events: none; 
-            opacity: 0.85; 
+            opacity: 0.8;
         }
-        .results { 
+        .results-summary {
             display: none;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 40px;
             border-radius: 15px;
             text-align: center;
             margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideUp 0.5s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
-        .results.show { display: block; }
-        .buttons {
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .results-summary.show { 
+            display: block; 
+        }
+        .results-summary h2 { 
+            font-size: 2em; 
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .results-summary .score { 
+            font-size: 3.5em; 
+            font-weight: 800; 
+            margin: 20px 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .results-summary .percentage { 
+            font-size: 1.8em; 
+            margin-bottom: 15px;
+            opacity: 0.95;
+        }
+        .results-summary .message {
+            font-size: 1.3em;
+            margin-top: 20px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        .buttons-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
             margin-top: 30px;
             flex-wrap: wrap;
         }
         button {
-            padding: 12px 25px;
+            padding: 13px 28px;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .btn-reset { 
-            background: var(--primary); 
-            color: white; 
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
         }
-        .btn-reset:hover { 
-            background: #7d35a0; 
+        button:active {
+            transform: translateY(0);
         }
-        .btn-export { 
-            background: var(--success); 
-            color: white; 
+        .btn-reset {
+            background: linear-gradient(135deg, var(--primary) 0%, #7d35a0 100%);
+            color: white;
         }
-        .btn-export:hover { 
-            background: #229954; 
+        .btn-export {
+            background: linear-gradient(135deg, var(--success) 0%, #229954 100%);
+            color: white;
+        }
+        .btn-reset:disabled,
+        .btn-export:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .stat-item {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+            .stat-value {
+                font-size: 1.4em;
+            }
+            .q-text {
+                font-size: 1em;
+            }
+            .buttons-group {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>📋 الامتحان الشامل (50 سؤال)</h1>
+    <h1>📋 الامتحان الشامل</h1>
+    <p class="subtitle">إدارة الإنتاج والعمليات - 100 سؤال شامل وصعب</p>
+    
+    <div class="header-info">
+        <div class="header-info-item">
+            <strong>📚 المادة:</strong> إدارة الإنتاج والعمليات
+        </div>
+        <div class="header-info-item">
+            <strong>🔢 عدد الأسئلة:</strong> 100
+        </div>
+        <div class="header-info-item">
+            <strong>⏱️ الوقت المقترح:</strong> 120 دقيقة
+        </div>
+        <div class="header-info-item">
+            <strong>📅 التاريخ:</strong> <span id="todayDate">-</span>
+        </div>
+    </div>
     
     <div class="stats-sticky">
         <div class="stat-item stat-success">
-            ✓ صحيح: <span id="correct">0</span>
+            <span class="stat-label">✓ صحيح</span>
+            <span class="stat-value" id="correctScore">0</span>
         </div>
         <div class="stat-item stat-danger">
-            ✗ خطأ: <span id="wrong">0</span>
+            <span class="stat-label">✗ خطأ</span>
+            <span class="stat-value" id="wrongScore">0</span>
         </div>
         <div class="stat-item stat-info">
-            📊 السؤال: <span id="current">0</span>/50
+            <span class="stat-label">📊 السؤال</span>
+            <span class="stat-value"><span id="currentIdx">0</span>/100</span>
         </div>
         <div class="stat-item stat-warning">
-            ⏱️ <span id="timer">00:00</span>
+            <span class="stat-label">⏱️ الوقت</span>
+            <span class="stat-value" id="timer">00:00</span>
         </div>
     </div>
 
-    <div class="progress-bar">
-        <div class="progress-fill" id="progress" style="width: 0%"></div>
+    <div class="progress-container">
+        <div class="progress-label">
+            <span>التقدم</span>
+            <span><span id="progressPercent">0</span>%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
     </div>
 
-    <div id="results" class="results">
+    <div id="results-summary" class="results-summary">
         <h2>✨ تم إكمال الامتحان!</h2>
-        <div style="font-size: 3em; margin: 20px 0;"><span id="score">0</span>/50</div>
-        <div style="font-size: 1.5em;"><span id="percentage">0</span>%</div>
-        <p id="message" style="margin-top: 15px; font-size: 1.2em;"></p>
+        <div class="score"><span id="finalScore">0</span> / 100</div>
+        <div class="percentage">النسبة المئوية: <span id="finalPercentage">0</span>%</div>
+        <div class="message" id="resultMessage"></div>
     </div>
 
-    <div id="quiz"></div>
+    <div id="quiz-container"></div>
 
-    <div class="buttons">
-        <button class="btn-reset" onclick="reset()">🔄 إعادة تعيين</button>
-        <button class="btn-export" onclick="export_results()">📊 تصدير</button>
+    <div class="buttons-group">
+        <button class="btn-reset" onclick="resetQuiz()">🔄 إعادة تعيين</button>
+        <button class="btn-export" onclick="exportResults()">📊 تصدير النتائج</button>
     </div>
 </div>
 
 <script>
-const questions = [
-    { q: "البرمجة الخطية تستخدم للوصول للحل الأمثل في ظل وجود قيود.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "مرحلة Improve في Six Sigma تعني وضع الضوابط.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "الصيانة التنبؤية تعتمد على الذكاء الاصطناعي.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "TQM تركز على فحص المنتج النهائي فقط.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "تحليل التعادل يساعد في اختيار البديل الأقل تكلفة.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "KANBAN نظام دفع لزيادة المخزون.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "الاقتصاد الدائري نموذج استخرج-صنع-تخلص.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "قاعدة SPT تقلل متوسط وقت الانتظار.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "باريتو: 20% أسباب = 80% نتائج.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "Backward Scheduling من الاستحقاق للخلف.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "عنق الزجاجة موارد زيادة الطاقة.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "الطباعة 3D تقلل المرونة.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "MRP يحتاج MPS كمدخل.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "جودة المطابقة مسؤولية المصممين فقط.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "بحوث العمليات تعتمد على الحدس.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "IoT يتيح M2M في المصنع.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "جونسون لجدولة N مهام على آلتين.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "تكاليف الفشل الداخلي بعد التسليم.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "JIT تقلل وقت الإعداد.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "شجرة القرارات للتأكد التام فقط.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "Finite Loading يوزع حسب الطاقة.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "Blockchain يقلل الشفافية.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "كايزن تحسينات مستمرة صغيرة.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "OPT توازن الطاقة.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "النقل يعظم الكمية بغض النظر التكلفة.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "هندسة القيمة في تصميم المنتج.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "الانحدار الأنسب لزيادة الطاقة.", a: "خطأ", opts: ["صح", "خطأ"] },
-    { q: "التوأم الرقمي يحاكي الأداء.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "التنبؤ أول خطوة في التخطيط.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "ISO 9001 الأول: رضا العميل.", a: "صح", opts: ["صح", "خطأ"] },
-    { q: "من ركز على العيوب الصفرية؟", a: "كروسبي", opts: ["ديمينج", "جوران", "كروسبي", "إيشيكاوا"] },
-    { q: "تخصيص عمال بأقل تكلفة:", a: "الهنغارية", opts: ["النقل", "الهنغارية", "القرارات", "التعادل"] },
-    { q: "إنتاج مخصص برخصة ضخم:", a: "Customization", opts: ["Batch", "Customization", "Job", "Project"] },
-    { q: "6 سيجما = عيوب:", a: "3.4مليون", opts: ["3.4مليون", "3.4ألف", "6.6مليون", "10مليون"] },
-    { q: "عظمة السمكة تحلل:", a: "الأسباب", opts: ["الأولويات", "الأسباب", "العمليات", "الزمن"] },
-    { q: "Muda تعني:", a: "الهدر", opts: ["الجودة", "السرعة", "الهدر", "المرونة"] },
-    { q: "صفر مخزون:", a: "JIT", opts: ["MRP", "JIT", "OPT", "SOP"] },
-    { q: "التعادل =:", a: "الإيرادات=التكاليف", opts: ["أرباح", "الإيرادات=التكاليف", "المتغيرة=الثابتة", "أقصى"] },
-    { q: "أعلى ضغط سعري:", a: "النضج", opts: ["التقديم", "النمو", "النضج", "الانحدار"] },
-    { q: "EDD تركز على:", a: "الاستحقاق", opts: ["الأقصر", "الاستحقاق", "الأول", "الأهمية"] },
-    { q: "الثورة الرابعة تعتمد:", a: "السيبرانية", opts: ["البخار", "الكهربائية", "السيبرانية", "العمالة"] },
-    { q: "وقاية تكاليف:", a: "التدريب", opts: ["التدريب", "الفحص", "الإعادة", "الشكاوى"] },
-    { q: "تكرير بترول:", a: "مستمر", opts: ["ورش", "متكرر", "مستمر", "مشاريع"] },
-    { q: "الصفوف توازن:", a: "الخدمة-الانتظار", opts: ["الربح", "الخدمة-الانتظار", "المخزون", "العمال"] },
-    { q: "ERP يهدف:", a: "المكاملة", opts: ["الإنتاج", "المكاملة", "الجودة", "الرسومات"] },
-    { q: "البحث عن الأمثل:", a: "التحسين", opts: ["المحاكاة", "التحسين", "التنبؤ", "الشبكات"] },
-    { q: "AI الصيانة تقلل:", a: "التوقف", opts: ["المهندسين", "التوقف", "الأجزاء", "الكهرباء"] },
-    { q: "DFM يبسط:", a: "التجميع", opts: ["المنتج", "التجميع", "التكلفة", "الفحص"] },
-    { q: "OPT يركز:", a: "الاختناقات", opts: ["الآلات", "الاختناقات", "العمالة", "التسويق"] },
-    { q: "جدولة مخرجات:", a: "أوامر", opts: ["الخطة", "أوامر", "التصميم", "السعر"] }
+const quizData = [
+    // الأسئلة الأصلية 50
+    { q: "البرمجة الخطية تستخدم للوصول للحل الأمثل في ظل وجود قيود على الموارد المتاحة.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في منهجية Six Sigma، ترمز مرحلة (Improve) إلى وضع الضوابط لضمان عدم عودة المشكلة.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "'الصيانة التنبؤية' في الصناعة 4.0 تعتمد على تحليل البيانات والذكاء الاصطناعي لتوقع الأعطال.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "تهدف إدارة الجودة الشاملة (TQM) إلى فحص المنتج النهائي فقط لاستبعاد العيوب.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "تحليل التعادل يساعد في اختيار البديل الأقل تكلفة عند مستويات إنتاج مختلفة.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "نظام KANBAN هو نظام دفع (Push System) يهدف لزيادة المخزون في مراكز العمل.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "الاقتصاد الدائري يركز على نموذج (استخرج، صنع، تخلص من) لتقليل التكاليف.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "قاعدة (SPT) تؤدي دائماً إلى تقليل متوسط وقت الانتظار داخل النظام الإنتاجي.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "مخطط باريتو يعتمد على قاعدة أن 20% من الأسباب مسؤولة عن 80% من النتائج.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "الجدولة الخلفية (Backward Scheduling) تبدأ من تاريخ الاستحقاق وتعود للخلف لتحديد تاريخ البدء.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "'عنق الزجاجة' هو المورد الذي تزيد طاقته الإنتاجية عن الطلب المفروض عليه.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "التصنيع الإضافي (طباعة ثلاثية الأبعاد) يقلل من مرونة التصميم ويزيد الهدر.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "تخطيط احتياجات المواد (MRP) يحتاج إلى جدول الإنتاج الرئيسي (MPS) كمدخل أساسي.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "جودة المطابقة (Quality of Conformance) هي مسؤولية المصممين فقط وليس عمال الإنتاج.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "بحوث العمليات تعتمد حصرياً على الحدس والخبرة في اتخاذ القرارات الإدارية.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "إنترنت الأشياء (IoT) يتيح التواصل اللحظي بين الآلات (M2M) في المصنع الذكي.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "قاعدة جونسون تستخدم لجدولة عدد (N) من المهام على آلتين بالتتابع بأقل وقت كلي.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "تكاليف الفشل الداخلي تظهر بعد تسليم المنتج للعميل (مثل المطالبة بالضمان).", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "فلسفة JIT تهدف لتقليل وقت الإعداد (Set-up Time) لتمكين إنتاج دفعات صغيرة.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "شجرة القرارات هي أداة بيانية تستخدم فقط في حالة التأكد التام من النتائج.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "التحميل المحدود (Finite Loading) يوزع المهام بناءً على الطاقة الفعلية المتاحة للآلة.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "الـ Blockchain في سلاسل التوريد يقلل من شفافية التتبع لزيادة الخصوصية.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "فلسفة 'كايزن' تركز على التحسينات الصغيرة والمستمرة بمشاركة جميع الموظفين.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "نظام تكنولوجيا الإنتاج الأمثل (OPT) ينادي بموازنة الطاقة بدلاً من موازنة التدفق.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "نموذج النقل في بحوث العمليات يهدف لتعظيم الكمية المنقولة بغض النظر عن التكلفة.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "هندسة القيمة تطبق غالباً في مرحلة 'تصميم المنتج' قبل بدء الإنتاج الفعلي.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في دورة حياة المنتج، مرحلة 'الانحدار' هي الأنسب لزيادة الطاقة الإنتاجية.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "'التوأم الرقمي' يستخدم لمحاكاة أداء الأنظمة وتوقع المشاكل في بيئة افتراضية.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "التنبؤ بالطلب هو الخطوة الأولى في عملية التخطيط الإجمالي للإنتاج.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "رضا العميل هو المبدأ الأول والأساسي في مواصفة الجودة ISO 9001.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "أي من هؤلاء الرواد ركز على مفهوم 'العيوب الصفرية'؟", a: "كروسبي", options: ["ديمينج", "جوران", "كروسبي", "إيشيكاوا"] },
+    { q: "الأداة الرياضية المستخدمة لتخصيص عمال لمهام معينة بأقل تكلفة هي:", a: "الطريقة الهنغارية", options: ["طريقة النقل", "الطريقة الهنغارية", "شجرة القرارات", "تحليل التعادل"] },
+    { q: "أي تكنولوجيا تمكن من إنتاج منتجات مخصصة لكل عميل بتكلفة الإنتاج الضخم؟", a: "Mass Customization", options: ["Batch Production", "Mass Customization", "Job Shop", "Project System"] },
+    { q: "في Six Sigma، مستوى 6 سيجما يعني أن نسبة العيوب هي:", a: "3.4 في المليون", options: ["3.4 في المليون", "3.4 في الألف", "6.6 في المليون", "10 في المليون"] },
+    { q: "مخطط 'عظمة السمكة' يستخدم لـ:", a: "تحليل الأسباب والجذور", options: ["تحديد الأولويات", "تحليل الأسباب والجذور", "مراقبة العمليات", "تخطيط الزمن"] },
+    { q: "الـ Muda في الإنتاج الرشيق تعني:", a: "الفواقد والهدر", options: ["الجودة العالية", "السرعة", "الفواقد والهدر", "المرونة"] },
+    { q: "نظام يهدف لجعل المخزون صفراً من خلال التوريد والإنتاج اللحظي:", a: "JIT", options: ["MRP", "JIT", "OPT", "S&OP"] },
+    { q: "نقطة التعادل تحدث عندما يكون:", a: "إجمالي الإيرادات = إجمالي التكاليف", options: ["الأرباح أعلى ما يمكن", "إجمالي الإيرادات = إجمالي التكاليف", "التكلفة المتغيرة = الثابتة", "الإنتاج في أقصى طاقة"] },
+    { q: "أي مرحلة في دورة حياة المنتج تشهد أعلى ضغوط تنافسية على السعر؟", a: "النضج", options: ["التقديم", "النمو", "النضج", "الانحدار"] },
+    { q: "قاعدة الأولوية (EDD) تركز على:", a: "تاريخ الاستحقاق الأقرب", options: ["وقت التشغيل الأقصر", "تاريخ الاستحقاق الأقرب", "أول من حضر", "أهمية العميل"] },
+    { q: "'الثورة الصناعية الرابعة' تعتمد بشكل أساسي على:", a: "الأنظمة السيبرانية الفيزيائية", options: ["المحركات البخارية", "خطوط التجميع الكهربائية", "الأنظمة السيبرانية الفيزيائية", "العمالة الكثيفة"] },
+    { q: "أي من هذه التكاليف يعتبر 'تكلفة وقاية'؟", a: "تخطيط الجودة والتدريب", options: ["تخطيط الجودة والتدريب", "فحص المواد الخام", "إعادة العمل", "معالجة الشكاوى"] },
+    { q: "في مصفوفة المنتج-العملية، (تكرير البترول) يعتبر نظام:", a: "إنتاج مستمر", options: ["نظام ورش", "إنتاج متكرر", "إنتاج مستمر", "نظام مشاريع"] },
+    { q: "الهدف من استخدام نماذج الصفوف (Queuing Theory) هو موازنة:", a: "تكلفة الخدمة وتكلفة الانتظار", options: ["الربح والخسارة", "تكلفة الخدمة وتكلفة الانتظار", "المخزون والطلب", "العمال والآلات"] },
+    { q: "الـ (ERP) هو نظام يهدف لـ:", a: "مكاملة جميع موارد المنظمة", options: ["تخطيط الإنتاج فقط", "مكاملة جميع موارد المنظمة", "إدارة جودة المنتج", "تصميم الرسومات الهندسي"] },
+    { q: "الطريقة التي تبحث عن 'الحل الأمثل' في بحوث العمليات تسمى:", a: "Optimization", options: ["Simulation", "Optimization", "Forecasting", "Networking"] },
+    { q: "استخدام الذكاء الاصطناعي في 'الصيانة التنبؤية' يهدف لتقليل:", a: "وقت التوقف غير المخطط له", options: ["عدد المهندسين", "وقت التوقف غير المخطط له", "سعر قطع الغيار", "استهلاك الكهرباء فقط"] },
+    { q: "'التصميم من أجل التصنيع' (DFM) يهدف لـ:", a: "تبسيط التجميع وتقليل القطع", options: ["تعقيد المنتج", "تبسيط التجميع وتقليل القطع", "زيادة التكلفة", "إلغاء مرحلة الفحص"] },
+    { q: "ميزة نظام (OPT) الرئيسية هي التركيز على:", a: "الموارد المقيدة (الاختناقات)", options: ["كل آلة على حدة", "الموارد المقيدة (الاختناقات)", "تقليل العمالة", "التسويق الدولي"] },
+    { q: "أي مما يلي يعتبر من مخرجات 'جدولة العمليات'؟", a: "أوامر العمل اليومية والزمن", options: ["الخطة الاستراتيجية", "أوامر العمل اليومية والزمن", "تصميم المصنع", "سعر البيع النهائي"] },
+
+    // 50 سؤال جديد وصعب جداً
+    { q: "في نموذج Wagner-Whitin للتخطيط الديناميكي، الفرضية الأساسية أن الطلب في كل فترة يجب أن يُلبى إما من الإنتاج أو من المخزون، لكن هل يمكن أن يكون هناك طلب معلق (backorder)؟", a: "صح", options: ["صح", "خطأ"] },
+    { q: "نظرية القيود (Theory of Constraints) من إيلياهو جولدرات تفترض أن كل نظام إنتاجي يحتوي على عدد لا محدود من الاختناقات.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "في نموذج (EOQ) الاقتصادي للكمية المطلوبة، افتراض التكلفة الخطية للمخزون يعني أن تكلفة الحفظ تتناسب طردياً مع كمية المخزون.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "منحنى التعلم (Learning Curve) يفترض أن وقت تنفيذ المهمة يقل بنسبة ثابتة مع كل مضاعفة في الإنتاج التراكمي.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في نماذج الجدولة بآلتين متوازيتين (Parallel Machines)، استخدام خوارزمية LPT (Longest Processing Time first) يضمن دائماً الحل الأمثل.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "نظام (CONWIP - Constant Work In Process) يحدد مستوى عمل ثابت في العملية الإنتاجية لكن يسمح بتحرر وحدات جديدة عند انتهاء وحدات أخرى.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في تحليل الحساسية (Sensitivity Analysis)، تغيير معامل دالة الهدف قد لا يؤثر على الحل الأمثل إذا بقي ضمن نطاق التفاوت المقبول.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "مؤشر Heijunka (التسطيح) في الإنتاج الرشيق يعني تقسيم الطلب الإجمالي بالتساوي على عدد الفترات الزمنية المتاحة.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في نموذج التنبؤ الأسي المضاعف (Double Exponential Smoothing)، هناك معاملان للتمويه يتحكمان في الاتجاه والمستوى معاً.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "خوارزمية جونسون (Johnson's Algorithm) يمكن تطبيقها على أكثر من ثلاث آلات للحصول على حل قريب من الأمثل.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "في تحليل الانحدار الخطي للتنبؤ، معامل التحديد R² يعبر عن نسبة التباين في المتغير التابع الذي يفسره المتغير المستقل.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "نظام (MTO - Make To Order) يتطلب تخزين مخزون أمان أكبر من نظام (MTS - Make To Stock) بسبب عدم القدرة على التنبؤ بالطلب.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "مصفوفة الارتباط (Correlation Matrix) بين متغيرات المدخلات والمخرجات تستخدم لتحديد المتغيرات الأكثر تأثيراً في العملية.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في إدارة المشاريع، المسار الحرج (Critical Path) هو المسار الذي يحتوي على أطول مدة زمنية إجمالية.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "نموذج (Newsvendor Problem) يتعامل مع سيناريو حيث الطلب عشوائي والعرض ثابت، والهدف تقليل تكلفة الفرصة الضائعة والمخزون الزائد.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في تحليل العاملية (Factorial Design)، التفاعل بين عاملين (Interaction) يعني أن تأثير أحد العاملين يعتمد على مستوى العامل الآخر.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "نظام (APS - Advanced Planning System) يمكنه التعامل مع تقلبات الطلب والعرض الكبيرة في الوقت الفعلي دون الحاجة لإعادة التخطيط.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "في نموذج (Bullwhip Effect)، أصغر تغيير نسبي في الطلب عند المستهلك قد يسبب تقلبات كبيرة في الطلب عند المورّد.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "تقنية SMED (Single Minute Exchange of Die) تهدف لتقليل وقت تبديل الأدوات إلى أقل من دقيقة واحدة.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في نماذج الخدمة (Service Models)، معدل الخدمة (Service Rate) يجب أن يكون أقل من معدل وصول العملاء (Arrival Rate) لضمان استقرار النظام.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "نموذج (Taguchi) للتصميم القوي (Robust Design) يركز على تقليل التباين في الأداء بغض النظر عن عوامل الضوضاء الخارجية.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في تحليل القيمة الحالية (NPV)، معدل الخصم الأعلى يؤدي إلى قيمة حالية أقل للتدفقات النقدية المستقبلية.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "نظام (CPFR - Collaborative Planning, Forecasting and Replenishment) يسمح بتشارك البيانات الحية بين الموردين والتجار لتحسين التنبؤ.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في برمجة الأرقام الصحيحة (Integer Programming)، إذا كانت كل متغيرات الحل الأمثل لـ LP تصادف أن تكون أعداداً صحيحة، فهذا يعني أن الحل الأمثل للمسألة الأصلية صحيح.", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "مؤشر OEE (Overall Equipment Effectiveness) يجمع بين التوفر والأداء والجودة في مقياس واحد يعكس كفاءة الآلة الكلية.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في نموذج العاملين الاثنين (Two-factor Theory) لـ Herzberg، الرضا الوظيفي وعدم الرضا لا يعتبران طرفي نقيض بل هما متغيران مستقلان.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "خوارزمية (Simulated Annealing) تحاكي عملية التبريد البطيء للمعادن للعثور على حل قريب من الأمثل في مسائل التحسين المعقدة.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في تحليل البقاء (Survival Analysis)، منحنى Kaplan-Meier يستخدم لتقدير دالة البقاء عندما تكون هناك بيانات مرقوبة (Censored Data).", a: "صح", options: ["صح", "خطأ"] },
+    { q: "نموذج (Bass Diffusion Model) يتنبأ بمعدل تبني منتج جديد بناءً على تأثير المبتكرين والمقلدين.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في نظام الوقت الفعلي (Real-time Systems)، تأخير الاستجابة (Response Time) يجب أن يكون أقل من فترة زمنية محددة مسبقاً.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "أي من الخيارات التالية يمثل تطبيق خاطئ لمبادئ Lean Manufacturing؟", a: "زيادة المخزون لضمان عدم نقص المواد الخام", options: ["تقليل الهدر والفواقد", "تحسين تدفق القيمة", "زيادة المخزون لضمان عدم نقص المواد الخام", "تمكين الموظفين في صنع القرار"] },
+    { q: "في سيناريو الإنتاج، إذا كان الطلب 1000 وحدة شهرياً والوقت الرصاصي 2 شهر، فإن المخزون الأمان المطلوب هو:", a: "يعتمد على تقلب الطلب", options: ["500 وحدة", "2000 وحدة", "1000 وحدة", "يعتمد على تقلب الطلب"] },
+    { q: "في مشكلة النقل، إذا كان عدد الموردين 5 وعدد المستهلكين 3، فإن عدد المتغيرات الأساسية في الحل الأساسي الممكن (BFS) هو:", a: "7", options: ["15", "8", "7", "6"] },
+    { q: "في جدولة الأشغال على آلة واحدة مع أوقات إعداد معتمدة على الترتيب (Sequence-dependent Setup Times)، خوارزمية النزول الأول (First Fit Decreasing) تقلل:", a: "أقصى انحراف عن المواعيد", options: ["المدة الكلية", "أقصى انحراف عن المواعيد", "عدد التأخيرات فقط", "تكلفة الإعداد فقط"] },
+    { q: "في نموذج التنبؤ ARIMA(1,1,1)، المعنى الاقتصادي لـ d=1 هو:", a: "الفرق من الدرجة الأولى يجعل السلسلة مستقرة", options: ["هناك اتجاه قوي في البيانات", "الفرق من الدرجة الأولى يجعل السلسلة مستقرة", "المتغير يتغير بشكل دوري", "البيانات تحتاج لتحويل لوغاريتمي"] },
+    { q: "في إدارة المخزون، نموذج (S,s) يعني أنه عندما يصل المخزون إلى مستوى s، يتم طلب كمية حتى نصل إلى مستوى S. هل هذا يقلل من عدد الطلبيات مقارنة بـ (Q,R)؟", a: "خطأ", options: ["صح", "خطأ"] },
+    { q: "في تحليل شجرة الأخطاء (Fault Tree Analysis)، البوابة OR تعني أن العطل الأساسي يحدث عندما يحدث:", a: "أي من الأحداث المدخلة", options: ["جميع الأحداث المدخلة في نفس الوقت", "أي من الأحداث المدخلة", "حدث واحد فقط", "لا شيء من الخيارات السابقة"] },
+    { q: "في نموذج (VMI - Vendor Managed Inventory)، المسؤولية الرئيسية عن إدارة المخزون تقع على:", a: "المورّد", options: ["المتجر الفردي", "المورّد", "الموزع", "المستهلك النهائي"] },
+    { q: "في تقنية (Design of Experiments)، التوازن (Balance) يعني أن كل معالجة تُطبّق على نفس عدد الوحدات التجريبية.", a: "صح", options: ["صح", "خطأ"] },
+    { q: "في نظام الإنتاج المختلط (Hybrid Manufacturing)، دمج بين (MTS) و(MTO) يسمح بـ:", a: "تقليل وقت الاستجابة مع الحفاظ على مرونة العملية", options: ["زيادة المخزون دائماً", "تقليل وقت الاستجابة مع الحفاظ على مرونة العملية", "إلغاء التنبؤ بالطلب", "تقليل جودة المنتج"] },
+    { q: "في نموذج الطابور M/M/c (Poisson Arrivals, Exponential Service, c servers)، احتمال انتظار العميل (Erlang C formula) يعتمد على:", a: "معدل الوصول ومعدل الخدمة وعدد الخوادم", options: ["معدل الوصول فقط", "معدل الخدمة فقط", "معدل الوصول ومعدل الخدمة وعدد الخوادم", "عدد العملاء في الطابور فقط"] },
+    { q: "في تطبيق Six Sigma على عملية ما، إذا كان Cpk = 0.67 فهذا يعني:", a: "العملية غير قادرة على الوفاء بمتطلبات الجودة", options: ["العملية في الحدود المقبولة", "العملية غير قادرة على الوفاء بمتطلبات الجودة", "العملية تحتاج لتحسين بسيط", "العملية ممتازة جداً"] },
+    { q: "في نموذج (Push vs Pull)، نظام Push يؤدي عادة إلى:", a: "مخزون أعلى وأقل استجابة", options: ["أقل مخزون وأكثر استجابة", "مخزون أعلى وأقل استجابة", "نفس المخزون والاستجابة", "لا يمكن المقارنة"] },
+    { q: "في تحليل التكلفة-الفائدة (Cost-Benefit Analysis)، نسبة الفائدة-التكلفة أكبر من 1 تعني:", a: "المشروع اقتصادي ويستحق التنفيذ", options: ["المشروع غير اقتصادي", "المشروع اقتصادي ويستحق التنفيذ", "المشروع محايد اقتصادياً", "البيانات غير كافية للقرار"] },
+    { q: "في إدارة الجودة، تطبيق مفهوم (Poka-Yoke - Mistake Proofing) يهدف إلى:", a: "منع الأخطاء قبل حدوثها", options: ["اكتشاف الأخطاء بعد حدوثها", "منع الأخطاء قبل حدوثها", "إصلاح الأخطاء بعد اكتشافها", "تسجيل الأخطاء للمراجعة"] },
+    { q: "في نموذج (Lean Six Sigma)، المرحلة Define تهتم بـ:", a: "تحديد المشاكل والأهداف بوضوح", options: ["تنفيذ التحسينات", "تحديد المشاكل والأهداف بوضوح", "قياس الأداء فقط", "التحكم والمتابعة"] },
 ];
 
-let correct = 0, wrong = 0, time = 0, answered = 0;
-let timer;
+let scoreCorrect = 0;
+let scoreWrong = 0;
+let timeElapsed = 0;
+let timerInterval;
+let currentQuizData = [];
 
-function start() {
-    timer = setInterval(() => {
-        time++;
-        const m = Math.floor(time / 60);
-        const s = time % 60;
-        document.getElementById('timer').innerText = 
-            `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+function formatDate() {
+    const today = new Date();
+    return today.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function startTimer() {
+    document.getElementById('todayDate').innerText = formatDate();
+    currentQuizData = shuffleArray(quizData);
+    timerInterval = setInterval(() => {
+        timeElapsed++;
+        const minutes = Math.floor(timeElapsed / 60);
+        const seconds = timeElapsed % 60;
+        const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        document.getElementById('timer').innerText = display;
     }, 1000);
+}
 
-    const container = document.getElementById('quiz');
-    questions.forEach((q, i) => {
+function buildQuiz() {
+    const container = document.getElementById('quiz-container');
+    currentQuizData.forEach((item, index) => {
         const card = document.createElement('div');
         card.className = 'q-card';
-        card.id = `q${i}`;
+        card.id = `q-${index}`;
         
-        let opts = q.opts.map(o => `
-            <div class="opt" onclick="check(${i},'${o}',this)">${o}</div>
+        let optsHtml = item.options.map(o => `
+            <div class="opt" onclick="verify(${index}, '${o.replace(/'/g, "\\'")}', this)">${o}</div>
         `).join('');
 
         card.innerHTML = `
-            <span class="q-number">السؤال ${i + 1}</span>
-            <div class="q-text">${q.q}</div>
-            ${opts}
-            <div id="fb${i}" class="feedback"></div>
+            <span class="q-number">السؤال ${index + 1}</span>
+            <span class="q-text">${item.q}</span>
+            <div class="opts-box">${optsHtml}</div>
+            <div id="fb-${index}" class="feedback"></div>
         `;
         container.appendChild(card);
     });
 }
 
-function check(idx, ans, el) {
-    const q = questions[idx];
-    const card = document.getElementById(`q${idx}`);
-    const fb = document.getElementById(`fb${idx}`);
+function verify(idx, selected, el) {
+    const card = document.getElementById(`q-${idx}`);
+    const fb = document.getElementById(`fb-${idx}`);
+    const correctVal = currentQuizData[idx].a;
     
     card.classList.add('disabled');
-    answered++;
     
-    if (ans === q.a) {
+    if (selected === correctVal) {
         el.classList.add('correct');
-        fb.innerText = '✓ صحيح!';
-        fb.style.backgroundColor = '#d4edda';
-        fb.style.color = '#155724';
-        fb.style.borderColor = 'var(--success)';
-        correct++;
+        fb.innerText = "✓ صحيحة تماماً!";
+        fb.classList.add('correct');
+        scoreCorrect++;
     } else {
         el.classList.add('wrong');
-        const opts = card.querySelectorAll('.opt');
-        opts.forEach(o => { 
-            if (o.innerText === q.a) o.classList.add('correct');
-        });
-        fb.innerText = `✗ الصحيح: ${q.a}`;
-        fb.style.backgroundColor = '#f8d7da';
-        fb.style.color = '#721c24';
-        fb.style.borderColor = 'var(--danger)';
-        wrong++;
+        const options = card.querySelectorAll('.opt');
+        options.forEach(o => { if(o.innerText === correctVal) o.classList.add('correct'); });
+        fb.innerText = `✗ الإجابة الصحيحة: ${correctVal}`;
+        fb.classList.add('wrong');
+        scoreWrong++;
     }
-    
-    fb.style.display = 'block';
-    document.getElementById('correct').innerText = correct;
-    document.getElementById('wrong').innerText = wrong;
-    document.getElementById('current').innerText = answered;
-    document.getElementById('progress').style.width = (answered / 50 * 100) + '%';
-    
-    if (answered === 50) finish();
+    fb.style.display = "block";
+    updateStatsDisplay();
+    checkCompletion();
 }
 
-function finish() {
-    clearInterval(timer);
-    const pct = Math.round(correct / 50 * 100);
-    document.getElementById('score').innerText = correct;
-    document.getElementById('percentage').innerText = pct;
+function updateStatsDisplay() {
+    document.getElementById('correctScore').innerText = scoreCorrect;
+    document.getElementById('wrongScore').innerText = scoreWrong;
+    const answered = scoreCorrect + scoreWrong;
+    document.getElementById('currentIdx').innerText = answered;
     
-    let msg = '';
-    if (pct >= 90) msg = '🌟 ممتاز!';
-    else if (pct >= 80) msg = '👍 جيد جداً';
-    else if (pct >= 70) msg = '✓ جيد';
-    else if (pct >= 60) msg = '⚠ مقبول';
-    else msg = '❌ حاول مرة أخرى';
-    
-    document.getElementById('message').innerText = msg;
-    document.getElementById('results').classList.add('show');
+    const percentage = Math.round((answered / 100) * 100);
+    document.getElementById('progressPercent').innerText = percentage;
+    document.getElementById('progressFill').style.width = percentage + '%';
 }
 
-function reset() {
-    if (confirm('إعادة تعيين؟')) location.reload();
+function checkCompletion() {
+    if (scoreCorrect + scoreWrong === 100) {
+        showResults();
+    }
 }
 
-function export_results() {
-    const pct = Math.round(correct / 50 * 100);
-    const m = Math.floor(time / 60);
-    const s = time % 60;
+function showResults() {
+    clearInterval(timerInterval);
+    const totalScore = scoreCorrect;
+    const percentage = Math.round((totalScore / 100) * 100);
     
-    const csv = `نتائج الامتحان\nالصحيح: ${correct}\nالخطأ: ${wrong}\nالنسبة: ${pct}%\nالوقت: ${m}:${String(s).padStart(2,'0')}\nالحالة: ${pct >= 70 ? 'نجح' : 'لم ينجح'}`;
+    document.getElementById('finalScore').innerText = totalScore;
+    document.getElementById('finalPercentage').innerText = percentage;
     
-    const blob = new Blob([csv], {type: 'text/csv'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `results_${Date.now()}.csv`;
-    a.click();
+    let message = '';
+    if (percentage >= 90) message = '🌟 ممتاز! أداء استثنائي';
+    else if (percentage >= 80) message = '👍 جيد جداً! نتيجة مميزة';
+    else if (percentage >= 70) message = '✓ جيد! اجتزت الامتحان';
+    else if (percentage >= 60) message = '⚠ مقبول. حاول مرة أخرى';
+    else message = '❌ يحتاج لمراجعة أكثر';
+    
+    document.getElementById('resultMessage').innerText = message;
+    document.getElementById('results-summary').classList.add('show');
 }
 
-start();
+function resetQuiz() {
+    if (confirm('هل تريد فعلاً إعادة تعيين الامتحان؟')) {
+        scoreCorrect = 0;
+        scoreWrong = 0;
+        timeElapsed = 0;
+        clearInterval(timerInterval);
+        document.getElementById('results-summary').classList.remove('show');
+        document.getElementById('quiz-container').innerHTML = '';
+        document.getElementById('progressFill').style.width = '0%';
+        document.getElementById('progressPercent').innerText = '0';
+        buildQuiz();
+        startTimer();
+    }
+}
+
+function exportResults() {
+    const totalScore = scoreCorrect;
+    const percentage = Math.round((totalScore / 100) * 100);
+    const minutes = Math.floor(timeElapsed / 60);
+    const seconds = timeElapsed % 60;
+    
+    const csv = `نتائج الامتحان - إدارة الإنتاج والعمليات
+================================================
+التاريخ: ${formatDate()}
+الإجابات الصحيحة: ${scoreCorrect}
+الإجابات الخاطئة: ${scoreWrong}
+النسبة المئوية: ${percentage}%
+الوقت المستغرق: ${minutes} دقيقة و${seconds} ثانية
+================================================
+الحالة: ${percentage >= 70 ? 'نجح ✓' : 'لم ينجح ✗'}
+التقييم: ${percentage >= 90 ? '🌟 ممتاز' : percentage >= 80 ? '👍 جيد جداً' : percentage >= 70 ? '✓ جيد' : percentage >= 60 ? '⚠ مقبول' : '❌ يحتاج لمراجعة'}`;
+    
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `نتائج_الامتحان_${new Date().getTime()}.csv`;
+    link.click();
+}
+
+buildQuiz();
+startTimer();
 </script>
 </body>
 </html>
