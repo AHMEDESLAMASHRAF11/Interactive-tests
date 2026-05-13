@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الامتحان الشامل - إدارة الإنتاج والعمليات</title>
+    <style>
+        :root { 
+            --primary: #8e44ad; 
+            --success: #27ae60; 
+            --danger: #c0392b; 
+            --warning: #f39c12;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px; 
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: auto; 
+            background: white; 
+            padding: 25px; 
+            border-radius: 15px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+        }
+        h1 { 
+            text-align: center; 
+            color: var(--primary); 
+            border-bottom: 4px solid var(--primary); 
+            padding-bottom: 15px; 
+            margin-bottom: 20px;
+        }
+        .stats-sticky { 
+            position: sticky; 
+            top: 0; 
+            background: white; 
+            z-index: 1000; 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            padding: 15px; 
+            border-bottom: 2px solid #ddd; 
+            margin-bottom: 25px; 
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .stat-item {
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+        .stat-success { background: #d4edda; color: var(--success); }
+        .stat-danger { background: #f8d7da; color: var(--danger); }
+        .stat-info { background: #d1ecf1; color: #0c5460; }
+        .stat-warning { background: #fff3cd; color: #856404; }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
+            transition: width 0.3s ease;
+        }
+        .q-card { 
+            margin-bottom: 25px; 
+            padding: 20px; 
+            border-right: 6px solid #d5dbdb; 
+            background: #fff; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .q-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+        .q-text { 
+            font-size: 1.1em; 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            color: #2c3e50; 
+        }
+        .opt { 
+            display: block; 
+            padding: 14px; 
+            margin: 10px 0; 
+            border: 2px solid #ebf0f1; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            background: #fdfefe;
+        }
+        .opt:hover { 
+            background: #f4f6f7; 
+            border-color: var(--primary);
+            transform: translateX(-5px);
+        }
+        .opt.correct { 
+            background-color: #d4edda !important; 
+            border-color: var(--success) !important; 
+            color: #155724; 
+            font-weight: bold;
+        }
+        .opt.wrong { 
+            background-color: #f8d7da !important; 
+            border-color: var(--danger) !important; 
+            color: #721c24;
+        }
+        .feedback { 
+            margin-top: 15px; 
+            font-weight: bold; 
+            display: none; 
+            padding: 10px; 
+            border-radius: 5px;
+            border-right: 4px solid;
+        }
+        .disabled { 
+            pointer-events: none; 
+            opacity: 0.85; 
+        }
+        .results { 
+            display: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .results.show { display: block; }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-reset { 
+            background: var(--primary); 
+            color: white; 
+        }
+        .btn-reset:hover { 
+            background: #7d35a0; 
+        }
+        .btn-export { 
+            background: var(--success); 
+            color: white; 
+        }
+        .btn-export:hover { 
+            background: #229954; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📋 الامتحان الشامل (50 سؤال)</h1>
+    
+    <div class="stats-sticky">
+        <div class="stat-item stat-success">
+            ✓ صحيح: <span id="correct">0</span>
+        </div>
+        <div class="stat-item stat-danger">
+            ✗ خطأ: <span id="wrong">0</span>
+        </div>
+        <div class="stat-item stat-info">
+            📊 السؤال: <span id="current">0</span>/50
+        </div>
+        <div class="stat-item stat-warning">
+            ⏱️ <span id="timer">00:00</span>
+        </div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress" style="width: 0%"></div>
+    </div>
+
+    <div id="results" class="results">
+        <h2>✨ تم إكمال الامتحان!</h2>
+        <div style="font-size: 3em; margin: 20px 0;"><span id="score">0</span>/50</div>
+        <div style="font-size: 1.5em;"><span id="percentage">0</span>%</div>
+        <p id="message" style="margin-top: 15px; font-size: 1.2em;"></p>
+    </div>
+
+    <div id="quiz"></div>
+
+    <div class="buttons">
+        <button class="btn-reset" onclick="reset()">🔄 إعادة تعيين</button>
+        <button class="btn-export" onclick="export_results()">📊 تصدير</button>
+    </div>
+</div>
+
+<script>
+const questions = [
+    { q: "البرمجة الخطية تستخدم للوصول للحل الأمثل في ظل وجود قيود.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "مرحلة Improve في Six Sigma تعني وضع الضوابط.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "الصيانة التنبؤية تعتمد على الذكاء الاصطناعي.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "TQM تركز على فحص المنتج النهائي فقط.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "تحليل التعادل يساعد في اختيار البديل الأقل تكلفة.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "KANBAN نظام دفع لزيادة المخزون.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "الاقتصاد الدائري نموذج استخرج-صنع-تخلص.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "قاعدة SPT تقلل متوسط وقت الانتظار.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "باريتو: 20% أسباب = 80% نتائج.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "Backward Scheduling من الاستحقاق للخلف.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "عنق الزجاجة موارد زيادة الطاقة.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "الطباعة 3D تقلل المرونة.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "MRP يحتاج MPS كمدخل.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "جودة المطابقة مسؤولية المصممين فقط.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "بحوث العمليات تعتمد على الحدس.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "IoT يتيح M2M في المصنع.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "جونسون لجدولة N مهام على آلتين.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "تكاليف الفشل الداخلي بعد التسليم.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "JIT تقلل وقت الإعداد.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "شجرة القرارات للتأكد التام فقط.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "Finite Loading يوزع حسب الطاقة.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "Blockchain يقلل الشفافية.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "كايزن تحسينات مستمرة صغيرة.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "OPT توازن الطاقة.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "النقل يعظم الكمية بغض النظر التكلفة.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "هندسة القيمة في تصميم المنتج.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "الانحدار الأنسب لزيادة الطاقة.", a: "خطأ", opts: ["صح", "خطأ"] },
+    { q: "التوأم الرقمي يحاكي الأداء.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "التنبؤ أول خطوة في التخطيط.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "ISO 9001 الأول: رضا العميل.", a: "صح", opts: ["صح", "خطأ"] },
+    { q: "من ركز على العيوب الصفرية؟", a: "كروسبي", opts: ["ديمينج", "جوران", "كروسبي", "إيشيكاوا"] },
+    { q: "تخصيص عمال بأقل تكلفة:", a: "الهنغارية", opts: ["النقل", "الهنغارية", "القرارات", "التعادل"] },
+    { q: "إنتاج مخصص برخصة ضخم:", a: "Customization", opts: ["Batch", "Customization", "Job", "Project"] },
+    { q: "6 سيجما = عيوب:", a: "3.4مليون", opts: ["3.4مليون", "3.4ألف", "6.6مليون", "10مليون"] },
+    { q: "عظمة السمكة تحلل:", a: "الأسباب", opts: ["الأولويات", "الأسباب", "العمليات", "الزمن"] },
+    { q: "Muda تعني:", a: "الهدر", opts: ["الجودة", "السرعة", "الهدر", "المرونة"] },
+    { q: "صفر مخزون:", a: "JIT", opts: ["MRP", "JIT", "OPT", "SOP"] },
+    { q: "التعادل =:", a: "الإيرادات=التكاليف", opts: ["أرباح", "الإيرادات=التكاليف", "المتغيرة=الثابتة", "أقصى"] },
+    { q: "أعلى ضغط سعري:", a: "النضج", opts: ["التقديم", "النمو", "النضج", "الانحدار"] },
+    { q: "EDD تركز على:", a: "الاستحقاق", opts: ["الأقصر", "الاستحقاق", "الأول", "الأهمية"] },
+    { q: "الثورة الرابعة تعتمد:", a: "السيبرانية", opts: ["البخار", "الكهربائية", "السيبرانية", "العمالة"] },
+    { q: "وقاية تكاليف:", a: "التدريب", opts: ["التدريب", "الفحص", "الإعادة", "الشكاوى"] },
+    { q: "تكرير بترول:", a: "مستمر", opts: ["ورش", "متكرر", "مستمر", "مشاريع"] },
+    { q: "الصفوف توازن:", a: "الخدمة-الانتظار", opts: ["الربح", "الخدمة-الانتظار", "المخزون", "العمال"] },
+    { q: "ERP يهدف:", a: "المكاملة", opts: ["الإنتاج", "المكاملة", "الجودة", "الرسومات"] },
+    { q: "البحث عن الأمثل:", a: "التحسين", opts: ["المحاكاة", "التحسين", "التنبؤ", "الشبكات"] },
+    { q: "AI الصيانة تقلل:", a: "التوقف", opts: ["المهندسين", "التوقف", "الأجزاء", "الكهرباء"] },
+    { q: "DFM يبسط:", a: "التجميع", opts: ["المنتج", "التجميع", "التكلفة", "الفحص"] },
+    { q: "OPT يركز:", a: "الاختناقات", opts: ["الآلات", "الاختناقات", "العمالة", "التسويق"] },
+    { q: "جدولة مخرجات:", a: "أوامر", opts: ["الخطة", "أوامر", "التصميم", "السعر"] }
+];
+
+let correct = 0, wrong = 0, time = 0, answered = 0;
+let timer;
+
+function start() {
+    timer = setInterval(() => {
+        time++;
+        const m = Math.floor(time / 60);
+        const s = time % 60;
+        document.getElementById('timer').innerText = 
+            `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }, 1000);
+
+    const container = document.getElementById('quiz');
+    questions.forEach((q, i) => {
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        card.id = `q${i}`;
+        
+        let opts = q.opts.map(o => `
+            <div class="opt" onclick="check(${i},'${o}',this)">${o}</div>
+        `).join('');
+
+        card.innerHTML = `
+            <span class="q-number">السؤال ${i + 1}</span>
+            <div class="q-text">${q.q}</div>
+            ${opts}
+            <div id="fb${i}" class="feedback"></div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function check(idx, ans, el) {
+    const q = questions[idx];
+    const card = document.getElementById(`q${idx}`);
+    const fb = document.getElementById(`fb${idx}`);
+    
+    card.classList.add('disabled');
+    answered++;
+    
+    if (ans === q.a) {
+        el.classList.add('correct');
+        fb.innerText = '✓ صحيح!';
+        fb.style.backgroundColor = '#d4edda';
+        fb.style.color = '#155724';
+        fb.style.borderColor = 'var(--success)';
+        correct++;
+    } else {
+        el.classList.add('wrong');
+        const opts = card.querySelectorAll('.opt');
+        opts.forEach(o => { 
+            if (o.innerText === q.a) o.classList.add('correct');
+        });
+        fb.innerText = `✗ الصحيح: ${q.a}`;
+        fb.style.backgroundColor = '#f8d7da';
+        fb.style.color = '#721c24';
+        fb.style.borderColor = 'var(--danger)';
+        wrong++;
+    }
+    
+    fb.style.display = 'block';
+    document.getElementById('correct').innerText = correct;
+    document.getElementById('wrong').innerText = wrong;
+    document.getElementById('current').innerText = answered;
+    document.getElementById('progress').style.width = (answered / 50 * 100) + '%';
+    
+    if (answered === 50) finish();
+}
+
+function finish() {
+    clearInterval(timer);
+    const pct = Math.round(correct / 50 * 100);
+    document.getElementById('score').innerText = correct;
+    document.getElementById('percentage').innerText = pct;
+    
+    let msg = '';
+    if (pct >= 90) msg = '🌟 ممتاز!';
+    else if (pct >= 80) msg = '👍 جيد جداً';
+    else if (pct >= 70) msg = '✓ جيد';
+    else if (pct >= 60) msg = '⚠ مقبول';
+    else msg = '❌ حاول مرة أخرى';
+    
+    document.getElementById('message').innerText = msg;
+    document.getElementById('results').classList.add('show');
+}
+
+function reset() {
+    if (confirm('إعادة تعيين؟')) location.reload();
+}
+
+function export_results() {
+    const pct = Math.round(correct / 50 * 100);
+    const m = Math.floor(time / 60);
+    const s = time % 60;
+    
+    const csv = `نتائج الامتحان\nالصحيح: ${correct}\nالخطأ: ${wrong}\nالنسبة: ${pct}%\nالوقت: ${m}:${String(s).padStart(2,'0')}\nالحالة: ${pct >= 70 ? 'نجح' : 'لم ينجح'}`;
+    
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `results_${Date.now()}.csv`;
+    a.click();
+}
+
+start();
+</script>
+</body>
+</html>
